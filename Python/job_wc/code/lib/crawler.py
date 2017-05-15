@@ -76,7 +76,7 @@ class Crawler:
         for th in th_list:
             if th:
                 th.join()
-
+        print('Process finished!!')
 
     def grab_pagelinks(self, url, page_crawler, page_idx=None, header=None, sleep_time=0.5):
         """
@@ -128,7 +128,7 @@ class Crawler:
         :return:
         """
         th_list = []
-        for i in range(1, total_page):
+        for i in range(1, total_page + 1):
             page_nurl = page_url.format(i)
             th = self.grab_pagelinks_th(page_nurl, page_func, page_idx=i, header=header)
             th_list.append(th)
@@ -136,6 +136,7 @@ class Crawler:
         for th in th_list:
             if th:
                 th.join()
+        print('Process finished! Get {} links from {} pages'.format(len(self.alinks),total_page))
 
 
     def word_counter(self, words):
@@ -164,9 +165,6 @@ class Crawler:
     def logging_exception(self, page_idx, retry, e):
         print('Excpetion ocurred! Cannot retrieve content from page {} Retry: {}, {}'.format(page_idx, retry,e))
         # logging.exception('Exception occurred! Cannot retrieve content from page {} Retry: {}'.format(page_idx,retry))
-
-
-
 
     def get_counter(self):
         """
