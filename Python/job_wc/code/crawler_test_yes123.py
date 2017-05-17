@@ -45,13 +45,14 @@ print('Browser will quit!')
 browser.quit()
 
 def content_func(res):
+    words = []
     soup = BeautifulSoup(res.text, 'lxml')
     content = ''
     divs = soup.select('div.comp_detail')
     del divs[-1]
     for div in divs:
         content += div.text.replace('\n', '').replace('\xa0', '')
-    words = re.findall('java script|objective c|visual basic|[a-z]+[.+#]*', content, re.IGNORECASE)
+    words += list(set(re.findall('java script|objective c|visual basic|[A-Za-z.+#]+', content, re.IGNORECASE)))
     return words
 
 # Create an instance of Crawler class
@@ -62,4 +63,8 @@ crawler.grab_content_th_auto(alinks, content_func, sleep_time=1)
 
 # Call get_counter to get word count result
 print(crawler.get_counter().most_common())
+
+with open('yes123_1_new.csv', 'w') as f:
+    for lang, counts in crawler.get_counter().most_common():
+        f.write('{},{}\n'.format(lang,counts))
 

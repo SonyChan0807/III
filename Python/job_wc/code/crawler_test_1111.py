@@ -6,6 +6,7 @@ import requests
 
 # Define soup function and regular expression on your own
 def content_func(res):
+    words = []
     soup = BeautifulSoup(res.text, 'lxml')
     dds = soup.select('dl.dataList > dd')
     text = ''
@@ -15,7 +16,8 @@ def content_func(res):
         for img in dd.find_all('img'):
             img.decompose()
         text += dd.text
-    words = list(set(re.findall('java script|objective c|visual basic|[A-Za-z]+[.+#]*?', text, re.IGNORECASE)))
+    words += list(set(re.findall('java script|objective c|visual basic|[A-Za-z.+#]+', text, re.IGNORECASE)))
+    # words = list(set(re.findall('java script|objective c|visual basic|[A-Za-z]+[.+#]*?', text, re.IGNORECASE)))
     return words
 
 def page_func(res):
@@ -46,7 +48,11 @@ crawler.grab_pagelinks_th_auto(page_url, page_func, page, sleep_time=1)
 links = crawler.get_alinks()
 
 # Call grab_content_th_auto to get content page by page
-crawler.grab_content_th_auto(links, content_func, sleep_time=2)
+crawler.grab_content_th_auto(links, content_func, sleep_time=1)
 
 # Call get_counter to get word count result
 print(crawler.get_counter().most_common())
+
+with open('1111_1_new.csv', 'w') as f:
+    for lang, counts in crawler.get_counter().most_common():
+        f.write('{},{}\n'.format(lang,counts))

@@ -9,7 +9,6 @@ def pttURL_crawler(res):
     board = "Tech_job"
     keywd = '徵才'
     page_urls = []
-
     soup = BeautifulSoup(res.text, 'lxml')
     links = soup.select('div.title > a')
     # 爬取該頁面中每一篇有'keyword'的文章
@@ -21,10 +20,31 @@ def pttURL_crawler(res):
             page_urls.append(article_URL)
     return page_urls
 
+def content_func(res):
+    words = []
+    article_dict = {}
+    # 去除文章本文以外的標籤
+    soup = BeautifulSoup(res.text, 'lmxl')
+    trash_link = soup.select('div.article-metaline > span') + soup.select('div.article-metaline-right > span') \
+                 + soup.select('div.push') + soup.select('div#article-polling')
+    for trash in trash_link:
+        trash.decompose()
+    # 過濾文章內文,並將有英文的部份全部改為小寫
+    content = soup.select_one("#main-container")
+    for script in content.find_all('script'):
+        script.decompose()
+    for a in content.select('a'):
+        a.decompose()
+    article_dict['content'] = content.text
+    content = article_dict['content'].lower()
+    # 過濾文章內容的特殊符號
 
-# def
-
-
+    clearContent = content.replace('\n', '').replace('(', '').replace(')', '').replace(',', '')
+    string_word = re.sub('"https://.*"|http://.*"', ' ', clearContent)
+    # # 限定文章中只有英文是我們想要的內容
+    words += list(set(re.findall('java script|objective c|visual basic|[A-Za-z.+#]+', string_word, re.IGNORECASE)))
+    # words = list(set(re.findall('java script|objective c|visual basic|[A-Za-z]+[.+#]*?', string_word , re.IGNORECASE)))
+    return words
 
 
 
@@ -44,8 +64,17 @@ totalpage = int(bottons[1]['href'].split('index')[1].split('.')[0])+1
 crawler = Crawler(open_thread=True)
 
 page_url = URL + "bbs/" + board + "/index{}.html"
-crawler.grab_pagelinks_th_auto(page_url, pttURL_crawler, totalpage, sleep_time=0.2, header=headers)
+crawler.grab_pagelinks_th_auto(page_url, pttURL_crawler, totalpage, sleep_time=1, header=headers)
 
 links = crawler.get_alinks()
 
 print(links)
+# Call grab_content_th_auto to get content page by page
+crawler.grab_content_th_auto(links, content_func, sleep_time=2)
+
+# Call get_counter to get word count result
+print(crawler.get_counter().most_common())
+
+with open('pttsoft_1_new.csv', 'w') as f:
+    for lang, counts in crawler.get_counter().most_common():
+        f.write('{},{}\n'.format(lang,counts))
