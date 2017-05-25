@@ -1,0 +1,6 @@
+2017-05-25 19:33:32,349 - __main__ - INFO - Test info
+2017-05-25 19:33:32,349 - __main__ - WARNING - test warning
+2017-05-25 19:33:32,350 - __main__ - ERROR - test error
+2017-05-25 19:41:51,258 - __main__ - INFO - Test info
+2017-05-25 19:41:51,258 - __main__ - WARNING - test warning
+2017-05-25 19:41:51,258 - __main__ - ERROR - test error
