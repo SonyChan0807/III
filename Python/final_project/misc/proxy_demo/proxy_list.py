@@ -34,8 +34,8 @@ def main():
         url = 'http://www.us-proxy.org/'
         address = 'http://{}:{}'
 
-    # que = redis.StrictRedis(host=Redisdb.host, port=Redisdb.port, db=0, password=Redisdb.password)
-    que = redis.StrictRedis(host='10.120.37.118', port=6379, db=0, password='team1')
+    que = redis.StrictRedis(host=Redisdb.host, port=Redisdb.port, db=0, password=Redisdb.password)
+    # que = redis.StrictRedis(host='10.120.37.118', port=6379, db=0, password='team1')
     try:
         while True:
             if que.llen('proxy_list') < 10:
