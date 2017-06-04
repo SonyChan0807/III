@@ -1,6 +1,6 @@
 import redis
 import time
-que = redis.StrictRedis(host='192.168.114.10', port=6379, db=0)
+que = redis.StrictRedis(host='192.168.114.10', port=6379, db=0, password='team1')
 
 while True:
     proxy_url = que.blpop('proxy_list')[1]
