@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import time
-import sqlite3
 import re
 import logging
 from final_project.Crawler.lib.set_logger import setup_logging
@@ -18,13 +17,13 @@ brand_list = ['AUDI', 'BENZ', 'BMW', 'FORD', 'HONDA', 'LEXUS', 'MAZDA', 'MITSUBI
               'NISSAN', 'PORSCHE', 'SUZUKI', 'SUBARU', 'TOYOTA', 'VOLVO', 'VW']
 
 class Redisdb:
-    host = '10.120.37.118'
+    host = '192.168.114.10'
     port = '6379'
     password = 'team1'
 
 def gen_headers():
     headers = {'User-Agent': user_agents[randint(0, len(user_agents) - 1)],
-               'Remferer': referers[randint(0, len(referers) - 1)]}
+               'Referer': referers[randint(0, len(referers) - 1)]}
     return headers
 
 def get_brand_url(url):

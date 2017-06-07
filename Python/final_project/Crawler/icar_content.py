@@ -7,6 +7,8 @@ from final_project.Crawler.lib.set_logger import setup_logging
 from random import randint
 import redis
 import datetime
+from hashlib import blake2b
+
 
 referers = ['tw.yahoo.com', 'www.google.com', 'http://www.msn.com/zh-tw/', 'http://www.pchome.com.tw/']
 user_agents = [
@@ -20,20 +22,26 @@ brand_list = ['AUDI', 'BENZ', 'BMW', 'FORD', 'HONDA', 'LEXUS', 'MAZDA', 'MITSUBI
 
 
 class Redisdb:
-    host = '10.120.37.118'
+    host = '192.168.114.10'
     port = '6379'
     password = 'team1'
 
 def gen_headers():
     headers = {'User-Agent': user_agents[randint(0, len(user_agents) - 1)],
-               'Remferer': referers[randint(0, len(referers) - 1)]}
+               'Referer': referers[randint(0, len(referers) - 1)]}
     return headers
+def gen_proxies():
+    proxy_url = que.blpop('proxy_list')[1].decode('utf8')
+    proxy_gen = {'http': proxy_url, 'https': proxy_url}
+    print(proxy_url)
+    return proxy_gen
 
 def get_content(url):
-    url = url.split('|')[0]
+    new_url = url.split('|')[0]
     headers = gen_headers()
-    res = requests.get(url, headers=headers)
+    res = requests.get(new_url, headers=headers, proxies=proxy)
     soup = BeautifulSoup(res.text, 'lxml')
+
     contents = []
     content_table = soup.select_one('table > tr').select_one('td').select('table')[5]
     for tr in content_table.select('tr'):
@@ -47,7 +55,11 @@ def get_content(url):
     # date
     date_table = soup.select_one('table > tr').select_one('td').select('table')[2]
     date_str = date_table.select_one('tr').select('td')[1].text
-    tm = int(datetime.datetime.strptime(date_str[5:], "%Y-%m-%d").timestamp())
+    if len(date_str) == 0:
+        date_str = url.split('|')[1]
+    else:
+        date_str = date_str[5:]
+    tm = int(datetime.datetime.strptime(date_str, "%Y-%m-%d").timestamp())
     contents.append('時間：' + str(tm))
 
     # title
@@ -66,12 +78,10 @@ def get_content(url):
 
     content_dict = {k.split('：')[0]: k.split('：')[1] for k in contents if len(k) > 0}
     content_dict['網站'] = 'icars'
-    content_dict['連結'] = url
+    content_dict['連結'] = new_url
     return content_dict
 
 def add_to_sqlite(content_dict):
-    conn = sqlite3.connect('/home/ubuntu/python/III/Python/final_project/Crawler/example.db')
-    cursor = conn.cursor()
 
     source = content_dict['網站']
     url = content_dict['連結']
@@ -89,13 +99,18 @@ def add_to_sqlite(content_dict):
     posttime = content_dict['時間']
     price = content_dict['價格']
     certificate = ''
+    try:
+        conn = sqlite3.connect('/home/ubuntu/python/III/Python/final_project/Crawler/icars.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO icars VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                       (source, url, title, brand, model, doors, color, cc, transmission, equip,
+                        mileage, years, location, posttime, price, certificate))
+        conn.commit()
+    except Exception:
+        conn.rollback()
+    finally:
+        conn.close()
 
-
-    cursor.execute('INSERT INTO icars VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                   (source, url, title, brand, model, doors, color, cc, transmission, equip,
-                    mileage, years, location, posttime, price, certificate))
-
-    conn.commit()
 
 
 def check_duplicates(content_dict):
@@ -116,6 +131,11 @@ def check_duplicates(content_dict):
     else:
         return True
 
+def hash_func(url):
+    h = blake2b(digest_size=20)
+    h.update(str.encode(url))
+    return h.hexdigest()
+
 if __name__ == '__main__':
 
     # Setup varibles
@@ -124,18 +144,28 @@ if __name__ == '__main__':
 
     # Get url from redis
     que = redis.StrictRedis(host=Redisdb.host, port=Redisdb.port, db=0, password=Redisdb.password)
-    url = que.blpop('proxy_list')[1].decode('utf8')
 
     # Get content
-    content_dict = None
-    count = 5
-    while count:
-        try:
-            content_dict = get_content(url)
-            break
-        except Exception as e:
-            count -= 1
-            logger.exception('url:' + url + ' count' + count)
+    proxy = gen_proxies()
 
-    if not check_duplicates(content_dict):
-        add_to_sqlite(content_dict)
+    while que.llen('icar_list') != 0:
+        count = 5
+        url = que.blpop('icar_list')[1].decode('utf8')
+        while count:
+            try:
+                content_dict = get_content(url)
+                if not check_duplicates(content_dict):
+                    add_to_sqlite(content_dict)
+                break
+            except Exception as e:
+                count -= 1
+                proxies = gen_proxies()
+                logger.exception('url:' + url + ' count' + str(count))
+        # Push to failed list
+        if count == 0:
+            que.lpush('icar_failed', url)
+
+# redis.exceptions.ConnectionError
+# ConnectionRefusedError
+# requests.exceptions.ProxyError
+# IndexError
