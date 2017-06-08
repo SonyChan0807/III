@@ -12,9 +12,12 @@ user_agents = ['Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHT
              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9',
               'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36',
               'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)']
+cookie = 'PHPSESSID=5rvg4cdkfpbd9skuntk0ifo2r2; _gat=1; _ga=GA1.3.815060608.1496624322; _gid=GA1.3.657905158.1496852224'
 
 brand_list = ['AUDI', 'BENZ', 'BMW', 'FORD', 'HONDA', 'LEXUS', 'MAZDA', 'MITSUBISHI',
               'NISSAN', 'PORSCHE', 'SUZUKI', 'SUBARU', 'TOYOTA', 'VOLVO', 'VW']
+# brand_list = [ 'LEXUS','MAZDA', 'TOYOTA', 'VOLVO', 'VW']
+# 'LEXUS''MAZDA',
 
 class Redisdb:
     host = '192.168.114.10'
@@ -50,11 +53,11 @@ def get_car_innerurl(url):
                     car_str = 'http://cars.icars.com.tw' + tr.select_one('td').select_one('a')['href'] + '|' + \
                               tr.select('td')[6].text
                     que.rpush('icar_list', car_str)
+
             break
     except Exception as e:
         count -= 1
-        print(url + 'count=' + str(count))
-
+        logger.exception(url + 'count=' + str(count))
 def get_page_no(url):
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'lxml')
@@ -83,17 +86,16 @@ if __name__ == '__main__':
 
     # Get brand links
     for brand in brand_urls:
-        brand_no = brand[1][6]
+        brand_no = brand[1].split('.')[0][6:]
         # brand_url = 'http://cars.icars.com.tw/search_show.php?brand={}&psize=50&porder=&psc=&skey=&stype=&page={}'
         brand_url = 'http://cars.icars.com.tw/{}'
         page_no = get_page_no(brand_url.format(brand[1]))
         logger.info(brand[0] + ':' + page_no)
 
         for i in range(1, int(page_no) + 1):
-            brand_no = brand[1][6]
             brand_url = 'http://cars.icars.com.tw/search_show.php?brand={}&psize=50&porder=&psc=&skey=&stype=&page={}'\
                 .format(brand_no, i)
             headers = gen_headers()
             get_car_innerurl(brand_url)
             # time.sleep(1)
-            logger.debug('page {} is finished'.format(i))
+            logger.info('{} page {} is finished'.format(brand, i))

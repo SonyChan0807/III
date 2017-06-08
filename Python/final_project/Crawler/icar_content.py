@@ -37,6 +37,7 @@ def gen_proxies():
     return proxy_gen
 
 def get_content(url):
+    logger.info(url)
     new_url = url.split('|')[0]
     headers = gen_headers()
     res = requests.get(new_url, headers=headers, proxies=proxy)
@@ -93,8 +94,8 @@ def add_to_sqlite(content_dict):
     cc = content_dict['排氣量']
     transmission = content_dict['排擋方式']
     equip = content_dict['配備']
-    mileage = content_dict['網站']
-    years = content_dict['行駛里程']
+    mileage = content_dict['行駛里程']
+    years = content_dict['年份']
     location = content_dict['所在地']
     posttime = content_dict['時間']
     price = content_dict['價格']
@@ -106,8 +107,11 @@ def add_to_sqlite(content_dict):
                        (source, url, title, brand, model, doors, color, cc, transmission, equip,
                         mileage, years, location, posttime, price, certificate))
         conn.commit()
+        conn.close()
+        return True
     except Exception:
         conn.rollback()
+        return False
     finally:
         conn.close()
 
@@ -126,7 +130,7 @@ def check_duplicates(content_dict):
     num = list(
         cursor.execute('SELECT * FROM icars WHERE title = ? AND cc = ? AND color = ?  AND equip = ? AND location = ?',
                        (title, cc, color, equip, location)))
-    if num != 0:
+    if len(num) == 0:
         return False
     else:
         return True
@@ -149,17 +153,24 @@ if __name__ == '__main__':
     proxy = gen_proxies()
 
     while que.llen('icar_list') != 0:
-        count = 5
+        count = 3
         url = que.blpop('icar_list')[1].decode('utf8')
         while count:
             try:
                 content_dict = get_content(url)
                 if not check_duplicates(content_dict):
                     add_to_sqlite(content_dict)
-                break
+                else:
+                    logger.info('same car exist pass')
+                    break
+            except IndexError as e:
+                logger.exception(e)
+                count -= 1
+            except (requests.exceptions.ProxyError, ConnectionRefusedError) as e:
+                logger.exception(e)
+                proxies = gen_proxies()
             except Exception as e:
                 count -= 1
-                proxies = gen_proxies()
                 logger.exception('url:' + url + ' count' + str(count))
         # Push to failed list
         if count == 0:
