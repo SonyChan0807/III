@@ -109,7 +109,8 @@ def add_to_sqlite(content_dict):
         conn.commit()
         conn.close()
         return True
-    except Exception:
+    except Exception as e:
+        logger.exception('SQL Error')
         conn.rollback()
         return False
     finally:
@@ -176,7 +177,3 @@ if __name__ == '__main__':
         if count == 0:
             que.lpush('icar_failed', url)
 
-# redis.exceptions.ConnectionError
-# ConnectionRefusedError
-# requests.exceptions.ProxyError
-# IndexError

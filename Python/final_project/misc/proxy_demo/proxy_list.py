@@ -2,8 +2,14 @@ from bs4 import BeautifulSoup
 import requests
 import argparse
 import redis
-from crawler_config import Redisdb
+# from crawler_config.py import Redisdb
 
+
+
+class Redisdb:
+    host = '192.168.196.172'
+    port = '6379'
+    password = 'team1'
 
 def test_proxy(proxy_url):
     """
@@ -34,24 +40,22 @@ def main():
         url = 'http://www.us-proxy.org/'
         address = 'http://{}:{}'
 
+    # que = redis.StrictRedis(host=Redisdb.host, port=Redisdb.port, db=0)
     que = redis.StrictRedis(host=Redisdb.host, port=Redisdb.port, db=0, password=Redisdb.password)
     # que = redis.StrictRedis(host='10.120.37.118', port=6379, db=0, password='team1')
     try:
         while True:
-            if que.llen('proxy_list') < 10:
-                print('proxy number is less than 10')
+            if que.llen('proxy_list') < 30:
+                print('proxy number is less than 30')
                 res = requests.get(url)
                 soup = BeautifulSoup(res.text, 'lxml')
-                trs = soup.select('tbody > tr')
-                for tr in trs:
+                trs = soup.select('tbody > tr')[:40]
+                for idx, tr in enumerate(trs):
                     tds = tr.select('td')
                     proxy_url = address.format(tds[0].text, tds[1].text)
                     if test_proxy(proxy_url):
-                        if que.llen('proxy_list') <= 20:
-                            que.rpush('proxy_list', proxy_url)
-                            print('push {} successfully'.format(proxy_url))
-                        else:
-                            break
+                        que.rpush('proxy_list', proxy_url)
+                        print('push {} successfully {}'.format(proxy_url, idx))
 
     except KeyboardInterrupt:
         print('stop program by user interrupt')

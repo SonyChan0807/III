@@ -16,8 +16,6 @@ cookie = 'PHPSESSID=5rvg4cdkfpbd9skuntk0ifo2r2; _gat=1; _ga=GA1.3.815060608.1496
 
 brand_list = ['AUDI', 'BENZ', 'BMW', 'FORD', 'HONDA', 'LEXUS', 'MAZDA', 'MITSUBISHI',
               'NISSAN', 'PORSCHE', 'SUZUKI', 'SUBARU', 'TOYOTA', 'VOLVO', 'VW']
-# brand_list = [ 'LEXUS','MAZDA', 'TOYOTA', 'VOLVO', 'VW']
-# 'LEXUS''MAZDA',
 
 class Redisdb:
     host = '192.168.114.10'
@@ -58,6 +56,7 @@ def get_car_innerurl(url):
     except Exception as e:
         count -= 1
         logger.exception(url + 'count=' + str(count))
+
 def get_page_no(url):
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'lxml')
@@ -87,7 +86,6 @@ if __name__ == '__main__':
     # Get brand links
     for brand in brand_urls:
         brand_no = brand[1].split('.')[0][6:]
-        # brand_url = 'http://cars.icars.com.tw/search_show.php?brand={}&psize=50&porder=&psc=&skey=&stype=&page={}'
         brand_url = 'http://cars.icars.com.tw/{}'
         page_no = get_page_no(brand_url.format(brand[1]))
         logger.info(brand[0] + ':' + page_no)
@@ -97,5 +95,4 @@ if __name__ == '__main__':
                 .format(brand_no, i)
             headers = gen_headers()
             get_car_innerurl(brand_url)
-            # time.sleep(1)
             logger.info('{} page {} is finished'.format(brand, i))
