@@ -12,9 +12,10 @@ mongoose.connection.on('error', (err) => {
   console.error(`${err.message}`);
 });
 
-
+// models
 require('./models/mobile01');
 require('./models/textcloud');
+require('./models/radar.js');
 
 
 const app = require('./app');

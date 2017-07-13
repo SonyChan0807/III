@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Article = mongoose.model('mobile01');
 const mysql = require('mysql2/promise');
-const Textcloud = mongoose.model('webtest')
+// const Textcloud = mongoose.model('webtest')
 
 
 
@@ -15,11 +15,11 @@ exports.apidata = async (req, res) => {
 
 };
 
-exports.apidata2 = async (req, res) => {
-    const textcloud = await Textcloud.findOne();
-    res.json(textcloud);
+// exports.apidata2 = async (req, res) => {
+//     const textcloud = await Textcloud.findOne();
+//     res.json(textcloud);
 
-};
+// };
 
 
 exports.mysqldata = async (req, res) =>{
@@ -32,23 +32,22 @@ exports.mysqldata = async (req, res) =>{
         database: process.env.MYSQL_DATABASE
     });
 
-    connection.connect((err) => {
-        if (err) {
-          console.error('error connecting: ' + err.stack);
-          return;
-        }
-        console.log('connection success');
-    });
+    // connection.connect((err) => {
+    //     if (err) {
+    //       console.error('error connecting: ' + err.stack);
+    //       return;
+    //     }
+    //     console.log('connection success');
+    // });
     
     
-    const db = req.con;
     const [rows, fields] = await connection.query('select * from final_carPrice limit 1');
     console.log(rows);
     connection.end();
     
     res.header('Content-type','application/json');
-    res.send(req.query.callback + '('+ JSON.stringify(obj) + ');');
-    // res.json(rows);
+    // res.send(req.query.callback + '('+ JSON.stringify(obj) + ');');
+    res.json(rows);
     
 };
 

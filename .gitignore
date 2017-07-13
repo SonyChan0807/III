@@ -2,3 +2,7 @@ JDBC/images
 .settings
 /data
 /data
+Javascript/final_project/node_modules/
+Javascript/final_project/public/*
+Javascript/final_project/views/Multi
+

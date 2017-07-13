@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const promisify = require('es6-promisify');
 const expressValidator = require('express-validator');
 const routes = require('./routes/index');
+const apis = require('./routes/api')
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 const mysql = require('mysql2/promise');
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator());
+
 
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser());
@@ -63,6 +65,8 @@ app.use(function(req, res, next) {
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes);
 
+app.use('/api', apis);
+
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
 
@@ -78,5 +82,5 @@ if (app.get('env') === 'development') {
 // production error handler
 app.use(errorHandlers.productionErrors);
 
-// done! we export it so we can start the site in start.js
+// done! we export it so we can start the site in start.js  
 module.exports = app;

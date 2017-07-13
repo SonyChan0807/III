@@ -1,49 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const testController = require('../controllers/testControllor');
-const chartController = require('../controllers/chartController');
+// const testController = require('../controllers/testControllor');
+// const chartController = require('../controllers/chartController');
+const pageController = require('../controllers/pageController');
+// const apiController = require('../controllers/apiController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 
 // Do work here
-router.get('/', catchErrors(testController.homePage));
 
-router.get('/showdata', catchErrors(testController.apidata));
-router.get('/showdata2', catchErrors(testController.apidata2));
+// home page
+router.get('/', catchErrors(pageController.homePage));
 
-router.get('/show', catchErrors(testController.mysqldata));
+// 熱門排行榜
+router.get('/ranking', catchErrors(pageController.rankingPage));
 
-router.get('/textcloud', catchErrors(chartController.d3chart));
+// 
+router.get('/brand', catchErrors(pageController.brandPage));
 
-// router.get('/price', (req, res) => {
-//   console.log("success");
-//   res.send("This is price page!");
-// });
+//
+router.get('/carGroup', catchErrors(pageController.carGroupPage));
 
-router.get('/ranking', (req, res) => {
-  console.log("success");
-  res.render('./Multi/index');;
-});
+//
+router.get('/price', catchErrors(pageController.pricePage));
 
-// router.get('/ranking', (req, res) => {
-//   console.log("success");
-//   res.render('./Multi/index');;
-// });
-
-// router.get('/textcloud', (req, res) => {
-//   console.log("success");
-//   res.send("This is textcloud page!");
-// });
-
-// router.get('/testjson', (req, res) => {
-//   console.log("success");
-//   res.send("This is textcloud page!");
-// });
+// test data
 
 
-// router.get('/api', (req, res) => {
-//   console.log("Go into api");
-//   res.json({"test":"data"})
-// });
+
+// router.get('/showdata', catchErrors(testController.apidata));
+// router.get('/showdata2', catchErrors(testController.apidata2));
+
+// router.get('/show', catchErrors(testController.mysqldata));
+// router.get('/textcloud', catchErrors(chartController.d3chart));
+
 
 module.exports = router;
