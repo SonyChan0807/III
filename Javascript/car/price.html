@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- If IE use the latest rendering engine -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Set the page to the width of the device and set the zoom level -->
+  <meta name="viewport" content="width = device-width, initial-scale = 1">
+  <title>Price Evaluation</title>
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+ 
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+  
+  <link rel="stylesheet" type="text/css" href="css/customize.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+
+</head>
+
+<body>
+  <!--navbar-->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">首頁</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">功能目錄<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/brands">品牌剖析</a></li>
+              <li><a href="/carGroup">車款推薦</a></li>
+              <li><a href="/price">車價預估</a></li>
+            </ul>
+          </li>
+          <li><a href="#">關於我們</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> 註冊</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登入</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+   <!--jumbotron-->
+  <div class="container-fluid banner" id=banner-price>
+    <div class="jumbotron">
+      <div class="container-fluid">
+        <br><br><br><br>
+        <h1>車價預估</h1>
+        <p></p>
+        
+      </div>
+    </div>
+  </div>
+  
+    <!--form start-->
+     <div id="priceFormDiv" class="container-fluid sectionContainer">
+  
+        <form class="form" action='#'>
+          <div class="row">
+            <div class="col-xs-12 col-md-2">
+              <label for="brand">廠牌:</label>
+              <select id="brand" name="brand" class="selectpicker form-control" data-width:"auto">
+                <option value="brand">--請選擇廠牌--</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-md-2">
+              <label for="years">年份:</label>
+              <select id="years" name="years" class="selectpicker form-control" data-width:"auto">
+                <option value="years">--請選擇年份--</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-md-2">
+              <label for="model">車款:</label>
+              <select id="model" name="model" class="selectpicker form-control" data-width:"auto">
+                <option value="years">--請選擇車款--</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-md-2">
+              <label for="type">等級:</label>
+                <select id="type" name="type" class="selectpicker form-control" data-width:"auto">
+                  <option value="type">--請選擇等級--</option>
+                </select>
+            </div>
+            <div class="col-xs-12 col-md-2">
+              <div class="form-group">
+                <label for="mileage">里程數(公里):</label>
+                <input id="mileage" name="mileage" class="form-control" placeholder="--請輸入里程數--" >
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-2" style="padding: 20px">
+              <button id="submitBtn" type="submit" class="btn-lg btn-primary btn-block">估價</button>
+            </div>
+          </div>
+
+        </form>
+
+     </div>
+    <!--form end-->
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
+          
+            <!--car image-->
+           <div class="thumbnail" >
+            <img id="carImg" src="img/2013_MAZDA_CX-9_3.7_V6.png" alt="No Image" style="width:100%">
+            <div id="shortComment" class="caption">
+              <h2>特色描述</h2>
+              <p>CX-9不全新搭載七吋彩色螢幕的多媒體影音導航系統，採用高科技直覺式多點觸控操作介面，並支援手寫輸入導航搜尋，無論是使用導航地圖，或欣賞圖片，都可藉由經由手勢拖拉、放大縮小，主畫面的圖示也能隨車主自由拖動，建立最就手的專屬配置，如同先進智慧型手機
+              </p>
+            </div>
+          </div>
+          <!--saling item table-->
+           <div style="height:200px">
+          <table id="item-table" class="table table-hover" >
+            <thead>
+              <tr>
+                <th>價格(萬)</th>
+                <th>里程數(萬)</th>
+                <th>車色</th>
+                <th>所在地</th>
+                <th>來源網站</th>
+                <th>連結</th>
+              </tr>
+            </thead>
+           
+            <tbody style=" overflow-y: auto;">
+              <tr>
+                <td>$105.2</td>
+                <td>15.6</td>
+                <td>黑</td>
+                <td>桃園市</td>
+                <td>8891</td>
+                <td><a href="#" class="btn btn-xs btn-info">go</a></td>
+              </tr>
+              <tr>
+                <td>$80.2</td>
+                <td>20.6</td>
+                <td>藍</td>
+                <td>台北市</td>
+                <td>HOT</td>
+                <td><a href="#" class="btn btn-xs btn-info">go</a></td>
+              </tr>
+              <tr>
+                <td>$120.2</td>
+                <td>5.6</td>
+                <td>紅</td>
+                <td>高雄市</td>
+                <td>YAHOO</td>
+                <td><a href="#" class="btn btn-xs btn-info">go</a></td>
+              </tr>
+              
+            </tbody>
+           
+          </table>
+           </div>
+
+        </div>
+        
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          
+          
+          <!--big estimate price-->
+           <div class="jumbotron">
+            <div class="container">
+              <p id="summaryTitle1">MAZDA&nbsp&nbsp&nbsp2013&nbsp&nbsp&nbspCX-9</p>
+              <p id="summaryTitle2">3.7 V6&nbsp&nbsp&nbsp(12.2萬公里)</p>
+              <p>合理價格:</P>
+              <h1 id="summaryPrice">&nbsp&nbsp&nbsp119.5萬</h1>
+            </div>
+          </div> 
+          <!--map here  -->
+          <div style="margin-bottom:30px;padding:20px;border:1px solid gray; border-radius:10px">
+            <div id="map" style="width:100%;min-height:500px;"></div>
+          </div>
+          <!--x-y scatter here-->
+          <div style="margin-bottom:30px;padding:40px 20px 20px 20px;border:1px solid gray; border-radius:10px">
+            <div id="XYscatter" style="width:100%;min-height:500px;"></div>
+          </div>
+        </div>
+      </div>
+        
+    </div>
+      
+      
+    
+     
+
+
+
+
+  
+  <!--footer-->
+    <div id='footer'>
+      <div class="container" style="">
+        <h2>CONNECT WITH US</h2>
+        <br>
+        <i class="fa fa-home fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-facebook-official fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
+        <hr style="color:gray; border-width:1px">
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>© 2017 BB101 前車之鑑小組. All rights reserved.</p>
+      </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap-select.min.js"></script>
+
+
+  <script src="js/echarts.min.js"></script>
+  <!-- 引入 dark 主题 -->
+  <script src="js/taiwan.js"></script>
+  <script src="js/dark.js"></script>
+  <script src="js/echarts-gl.min.js"></script>
+  <script src="js/XYscatter.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/price.js"></script>
+    
+    <script>
+      $('.fa').mouseover(function(){
+        $(this).css({
+          color:'white'
+        });
+      });
+      $('.fa').mouseleave(function(){
+        $(this).css({
+          color:'gray'
+        });
+      });
+    </script>
+
+
+  
+</body>
+
+</html>

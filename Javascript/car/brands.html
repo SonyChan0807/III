@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- If IE use the latest rendering engine -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Set the page to the width of the device and set the zoom level -->
+  <meta name="viewport" content="width = device-width, initial-scale = 1">
+  <title>Brand Analysis</title>
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+ 
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-slider.css">
+
+  <link rel="stylesheet" type="text/css" href="css/customize.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+  <!--navbar-->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">首頁</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">功能目錄<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/brands">品牌剖析</a></li>
+              <li><a href="/carGroup">車款推薦</a></li>
+              <li><a href="/price">車價預估</a></li>
+            </ul>
+          </li>
+          <li><a href="#">關於我們</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> 註冊</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登入</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!--jumbotron-->
+  <div class="container-fluid banner" id=banner-brands>
+    <div class="jumbotron">
+      <div class="container-fluid">
+        <br><br><br><br>
+        <h1>品牌剖析</h1>
+      </div>
+    </div>
+  </div>
+
+<!--content use bigContainer to create padding-->
+  <div class="container-fluid bigContainer">
+      <!--button for big screen-->
+      <div class="hidden-xs col-sm-12 col-md-12 col-lg-12 text-center">
+        <ul class="pagination pagination-lg">
+          <li class="active"><a class='benz' href="#">BENZ</a></li>
+          <li><a class='bmw' href="#">BMW</a></li>
+          <li><a class='ford' href="#">FORD</a></li>
+          <li><a class='honda' href="#">HONDA</a></li>
+          <li><a class='lexus' href="#">LEXUS</a></li>
+          <li><a class='mazda' href="#">MAZDA</a></li>
+          <li><a class='mitsubishi' href="#">MITSUBISHI</a></li>
+          <li><a class='nissan' href="#">NISSAN</a></li>
+          <li><a class='toyota' href="#">TOYOTA</a></li>
+          <li><a class='volkswagen' href="#">VOLKSWAGEN</a></li>
+        </ul>
+      </div>
+      <!--button for xs screen-->
+      <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+        <div style="float:right" >        
+          <div class="btn-group">
+            <button type="button" id="brandDropDown"class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+              請選擇品牌<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class='benz' href="#">BENZ</a></li>
+              <li><a class='bmw' href="#">BMW</a></li>
+              <li><a class='ford' href="#">FORD</a></li>
+              <li><a class='honda' href="#">HONDA</a></li>
+              <li><a class='lexus' href="#">LEXUS</a></li>
+              <li><a class='mazda' href="#">MAZDA</a></li>
+              <li><a class='mitsubishi' href="#">MITSUBISHI</a></li>
+              <li><a class='nissan' href="#">NISSAN</a></li>
+              <li><a class='toyota' href="#">TOYOTA</a></li>
+              <li><a class='volkswagen' href="#">VOLKSWAGEN</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+                                
+      
+      <div class="container">
+        <!--two plots-->
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div id="radar" style="width:100%;min-height:550px;"></div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div id="wordCloud" style="width:100%;min-height:550px;"></div>
+          </div>
+        </div>
+        <!--year slide bar-->
+        <div class="row">
+          <input style="width:100%;" id="yearslider" data-slider-id='ex1Slider' type="text" data-slider-min="2008" data-slider-max="2017" data-slider-step="1" data-slider-value="2017"/>
+        </div>
+      </div>
+  </div>
+  <!--footer-->
+    <div id='footer'>
+      <div class="container" style="">
+        <h2>CONNECT WITH US</h2>
+        <br>
+        <i class="fa fa-home fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-facebook-official fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
+        <hr style="color:gray; border-width:1px">
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>© 2017 BB101 前車之鑑小組. All rights reserved.</p>
+      </div>
+    </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap-select.min.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      $('li').mouseup(function () {
+        $(this).addClass('active');
+        var brand = $(this).find(':first-child').text();
+        
+        $('#brandDropDown').text(brand);
+        $('li').not(this).removeClass('active');
+      });
+    });
+  </script>
+
+  <script src="js/echarts.min.js"></script>
+  <script src="js/echarts-wordcloud.min.js"></script>
+  <script src="js/radar.js"></script>
+  <script src="js/wordCloud.js"></script>
+
+  <script src="js/bootstrap-slider.js"></script>
+<script src="js/brand.js"></script>
+    
+    <script>
+      $('.fa').mouseover(function(){
+        $(this).css({
+          color:'white'
+        });
+      });
+      $('.fa').mouseleave(function(){
+        $(this).css({
+          color:'gray'
+        });
+      });
+    </script>
+
+</body>
+
+</html>

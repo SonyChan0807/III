@@ -1,0 +1,118 @@
+.banner, navbar, .container, .container-fluid{
+   font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;
+}
+#banner-home{
+    min-height:700px;
+    background: url("../img/banner1cut.jpg") no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+#banner-price{
+    min-height:250px;
+    background: url("../img/evaluation.jpg") no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+#banner-brands{
+    min-height:250px;
+    background: url("../img/LogosDark.jpg") no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+#banner-home .jumbotron{
+    min-height:700px;
+    background-color:rgba(0,0, 0, 0);
+    text-shadow:  0 1px 2px rgba(0, 0, 0, .6);
+    text-align: center;
+    color:white;
+}
+#banner-price .jumbotron, #banner-brands .jumbotron{
+    
+    background-color:rgba(220,220, 220, 0.5);
+    text-shadow:  0 1px 2px rgba(0, 0, 0, .6);
+}
+
+.bigContainer{
+    padding: 100px;
+
+}
+.sectionContainer{
+    padding: 100px 0px 0px 0px;
+
+}
+
+.pagination {
+  text-align: center;
+}
+
+.col-xs-title{
+    margin: .67em 0.67em;
+    font-size: 2em;
+}
+
+.name, .nickname{
+    text-align:center;
+}
+#members{
+    background-color:#ccc; 
+    border:2px solid #ddd;
+    margin: 50px 0px 0px 0px
+}
+/*選單黑底白字*/
+#priceFormDiv{
+    margin: 60px; 
+    padding:20px; 
+    background-color:black; 
+}
+
+label{ 
+    color:white;
+}
+#footer{
+    background-color:black;
+    
+    padding:50px;
+    text-align:center;
+    color:white; 
+}
+
+.fa{
+    margin: 10px;
+    color: gray
+}
+
+/*test table scroll*/
+table {
+        width: 100%;
+    }
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+thead th {
+    height: auto;
+
+    text-align: left;
+}
+
+tbody {
+    height: 120px;
+    overflow-y: auto;
+    text-align: center;
+}
+
+thead {
+    /* fallback */
+}
+
+
+tbody td, thead th {
+    width: 16.6%;
+    float: left;
+}
