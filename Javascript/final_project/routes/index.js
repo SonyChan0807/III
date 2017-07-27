@@ -12,11 +12,11 @@ const { catchErrors } = require('../handlers/errorHandlers');
 // home page
 router.get('/', catchErrors(pageController.homePage));
 
-// 熱門排行榜
-router.get('/ranking', catchErrors(pageController.rankingPage));
+// // 熱門排行榜
+// router.get('/ranking', catchErrors(pageController.rankingPage));
 
 // 
-router.get('/brand', catchErrors(pageController.brandPage));
+router.get('/brands', catchErrors(pageController.brandPage));
 
 //
 router.get('/carGroup', catchErrors(pageController.carGroupPage));

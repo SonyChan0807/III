@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-child-process": "^1.1.1",
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
+    "child-process-promise": "^2.2.1",
     "cookie-parser": "^1.4.3",
     "d3": "^4.9.1",
     "dotenv": "^4.0.0",
